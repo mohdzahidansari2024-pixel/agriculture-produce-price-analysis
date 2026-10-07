@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Agricultural Price Analysis System</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 
@@ -22,174 +21,172 @@ html{
 
 body{
     font-family:Arial, Helvetica, sans-serif;
-    background:#07120d;
-    color:white;
+    background:#07130c;
+    color:#17251d;
 }
-
-/* =========================
-   LANDING PAGE
-========================= */
 
 #landing{
     min-height:100vh;
     display:flex;
     align-items:center;
     justify-content:center;
+    text-align:center;
     position:relative;
     overflow:hidden;
     background:
-        radial-gradient(circle at 20% 30%, rgba(80,130,70,.35), transparent 35%),
-        radial-gradient(circle at 80% 70%, rgba(180,130,45,.18), transparent 35%),
-        linear-gradient(135deg,#06100b,#102b1d 50%,#07120d);
+        radial-gradient(circle at 20% 20%,rgba(89,133,75,.35),transparent 35%),
+        radial-gradient(circle at 80% 80%,rgba(190,145,52,.18),transparent 35%),
+        linear-gradient(135deg,#06100a,#12301f,#07130c);
+    color:white;
 }
 
-#landing::before{
+#landing:before{
     content:"";
     position:absolute;
-    width:700px;
-    height:700px;
-    border:1px solid rgba(218,174,83,.18);
+    width:650px;
+    height:650px;
+    border:1px solid rgba(220,180,85,.18);
     border-radius:50%;
-    right:-280px;
-    top:-220px;
+    right:-300px;
+    top:-230px;
 }
 
-#landing::after{
+#landing:after{
     content:"";
     position:absolute;
-    width:550px;
-    height:550px;
+    width:500px;
+    height:500px;
     border:1px solid rgba(255,255,255,.08);
     border-radius:50%;
-    left:-300px;
-    bottom:-280px;
+    left:-270px;
+    bottom:-250px;
 }
 
-.landing-content{
-    width:min(1000px,92%);
-    text-align:center;
+.hero{
+    width:92%;
+    max-width:1000px;
     position:relative;
     z-index:2;
 }
 
 .badge{
     display:inline-block;
-    padding:12px 24px;
-    border:1px solid rgba(225,190,105,.75);
+    padding:11px 24px;
+    border:1px solid #d6b35c;
     border-radius:40px;
-    color:#e5c77b;
-    font-size:13px;
+    color:#e1c47a;
+    font-size:12px;
     font-weight:bold;
     letter-spacing:3px;
     margin-bottom:35px;
 }
 
-.hero-title{
+.hero h1{
     font-family:Georgia,serif;
-    font-size:clamp(48px,8vw,100px);
-    line-height:.95;
-    font-weight:bold;
+    font-size:clamp(48px,8vw,96px);
+    line-height:.96;
     letter-spacing:-3px;
 }
 
-.hero-title .gold{
-    color:#e5bb5d;
+.hero h1 span{
+    color:#e5bd62;
 }
 
-.hero-subtitle{
+.hero p{
     max-width:760px;
-    margin:35px auto;
-    color:#d6ddd8;
-    font-size:18px;
+    margin:32px auto;
+    color:#d4ddd7;
+    font-size:17px;
     line-height:1.7;
 }
 
-.explore-btn{
-    border:0;
+.explore{
+    display:inline-block;
     padding:18px 38px;
-    background:linear-gradient(135deg,#f0cb70,#c99b39);
-    color:#172014;
-    font-size:14px;
+    background:linear-gradient(135deg,#f1cf76,#c69637);
+    color:#142016;
+    text-decoration:none;
+    font-size:13px;
     font-weight:bold;
     letter-spacing:2px;
     border-radius:4px;
-    cursor:pointer;
     transition:.3s;
-    box-shadow:0 12px 35px rgba(205,159,58,.22);
+    box-shadow:0 12px 35px rgba(201,157,55,.25);
 }
 
-.explore-btn:hover{
+.explore:hover{
     transform:translateY(-4px);
-    box-shadow:0 18px 45px rgba(205,159,58,.35);
+    box-shadow:0 18px 45px rgba(201,157,55,.38);
 }
-
-/* =========================
-   DASHBOARD
-========================= */
 
 #dashboard{
     display:none;
     min-height:100vh;
-    background:#f4f1e8;
-    color:#17251d;
+    background:#f5f2e9;
+}
+
+#dashboard:target{
+    display:block;
+}
+
+body:has(#dashboard:target) #landing{
+    display:none;
 }
 
 .navbar{
-    background:#0a1911;
-    color:white;
+    position:sticky;
+    top:0;
+    z-index:100;
     padding:18px 6%;
+    background:#091910;
+    color:white;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    position:sticky;
-    top:0;
-    z-index:20;
-    box-shadow:0 5px 20px rgba(0,0,0,.18);
+    box-shadow:0 5px 20px rgba(0,0,0,.2);
 }
 
-.brand{
+.logo{
     font-family:Georgia,serif;
-    font-size:22px;
+    font-size:23px;
     font-weight:bold;
 }
 
-.brand span{
-    color:#d7ad53;
+.logo span{
+    color:#d7ad52;
 }
 
-.nav-tag{
-    color:#bfc8c2;
+.nav-text{
+    color:#c2ccc5;
     font-size:13px;
 }
 
 .dashboard-header{
-    padding:65px 6% 40px;
-    background:
-        radial-gradient(circle at 90% 10%,rgba(202,164,74,.12),transparent 30%),
-        #10251a;
+    padding:65px 6%;
     color:white;
+    background:
+        radial-gradient(circle at 85% 20%,rgba(214,172,70,.12),transparent 30%),
+        #10271a;
 }
 
-.small-label{
-    color:#d8b45e;
+.dashboard-label{
+    color:#d8b45d;
     font-size:12px;
     letter-spacing:3px;
     font-weight:bold;
 }
 
-.dashboard-header h1{
+.dashboard-header h2{
     font-family:Georgia,serif;
-    font-size:clamp(35px,5vw,62px);
+    font-size:clamp(38px,5vw,65px);
     margin:15px 0;
 }
 
 .dashboard-header p{
-    max-width:750px;
-    color:#c9d2cc;
+    max-width:760px;
+    color:#cbd5ce;
     line-height:1.7;
 }
-
-/* controls */
 
 .controls{
     width:88%;
@@ -201,21 +198,20 @@ body{
     box-shadow:0 12px 35px rgba(0,0,0,.1);
     display:flex;
     flex-wrap:wrap;
-    gap:20px;
-    align-items:end;
+    gap:22px;
 }
 
-.control-box{
+.control{
     flex:1;
-    min-width:210px;
+    min-width:230px;
 }
 
-.control-box label{
+.control label{
     display:block;
+    margin-bottom:8px;
     font-size:12px;
     font-weight:bold;
-    color:#647068;
-    margin-bottom:8px;
+    color:#657068;
     text-transform:uppercase;
     letter-spacing:1px;
 }
@@ -223,36 +219,32 @@ body{
 select{
     width:100%;
     padding:13px;
-    border:1px solid #d9ddd9;
+    border:1px solid #d6ddd8;
     border-radius:8px;
     background:white;
     font-size:15px;
-    color:#17251d;
 }
 
-.year-buttons{
+.years{
     display:flex;
-    gap:7px;
+    gap:8px;
     flex-wrap:wrap;
 }
 
-.year-btn{
-    padding:12px 17px;
-    border:1px solid #cfd6d0;
+.year{
+    padding:12px 18px;
     background:white;
+    border:1px solid #cbd3cd;
     border-radius:7px;
     cursor:pointer;
     font-weight:bold;
 }
 
-.year-btn.active,
-.year-btn:hover{
+.year.active{
     background:#123321;
     color:white;
     border-color:#123321;
 }
-
-/* content */
 
 .container{
     width:88%;
@@ -267,60 +259,55 @@ select{
     margin:45px 0 20px;
 }
 
-/* stats */
-
 .stats{
     display:grid;
     grid-template-columns:repeat(3,1fr);
     gap:18px;
 }
 
-.stat-card{
+.stat{
     background:white;
     padding:28px;
     border-radius:14px;
+    border-left:4px solid #c59a42;
     box-shadow:0 7px 25px rgba(0,0,0,.07);
-    border-left:4px solid #c9a14c;
 }
 
-.stat-label{
-    color:#68746c;
-    font-size:13px;
-    text-transform:uppercase;
+.stat small{
+    color:#68736d;
+    font-size:12px;
     letter-spacing:1px;
+    text-transform:uppercase;
 }
 
-.stat-value{
+.stat strong{
+    display:block;
     font-family:Georgia,serif;
     font-size:35px;
-    font-weight:bold;
     margin-top:10px;
 }
 
-/* chart */
-
 .chart-card{
     background:white;
-    border-radius:15px;
     padding:25px;
+    border-radius:15px;
     box-shadow:0 7px 25px rgba(0,0,0,.07);
 }
 
-.chart-wrapper{
-    height:420px;
-    position:relative;
+canvas{
+    width:100%;
+    height:400px;
+    display:block;
 }
-
-/* comparison */
 
 .comparison{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:15px;
+    gap:16px;
 }
 
-.compare-card{
-    background:#fff;
+.compare{
+    background:white;
     padding:22px;
     border-radius:12px;
     box-shadow:0 6px 20px rgba(0,0,0,.06);
@@ -334,27 +321,24 @@ select{
 .compare-price{
     font-family:Georgia,serif;
     font-size:28px;
+    color:#987126;
     margin-top:8px;
-    color:#9a7125;
 }
 
-.compare-bar{
+.bar{
     height:7px;
-    background:#e8e5db;
+    background:#e7e3d9;
     margin-top:15px;
     border-radius:10px;
     overflow:hidden;
 }
 
-.compare-fill{
+.bar-fill{
     height:100%;
-    background:#c69a42;
-    border-radius:10px;
+    background:#c69b42;
 }
 
-/* table */
-
-.table-card{
+.table-wrap{
     background:white;
     border-radius:15px;
     overflow:auto;
@@ -363,8 +347,8 @@ select{
 
 table{
     width:100%;
+    min-width:850px;
     border-collapse:collapse;
-    min-width:800px;
 }
 
 th{
@@ -377,7 +361,7 @@ th{
 
 td{
     padding:13px 15px;
-    border-bottom:1px solid #eee;
+    border-bottom:1px solid #eeeeee;
     font-size:14px;
 }
 
@@ -385,49 +369,29 @@ tr:hover td{
     background:#faf8f1;
 }
 
-/* information */
-
 .info-grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
     gap:18px;
 }
 
-.info-card{
+.info{
     background:white;
     padding:25px;
     border-radius:14px;
     box-shadow:0 7px 25px rgba(0,0,0,.06);
 }
 
-.info-card h3{
+.info h3{
     font-family:Georgia,serif;
+    color:#183b27;
     margin-bottom:10px;
-    color:#183c27;
 }
 
-.info-card p{
-    color:#5f6963;
+.info p{
+    color:#606a64;
     line-height:1.7;
 }
-
-/* status */
-
-.status{
-    margin:20px 0;
-    padding:14px 18px;
-    border-radius:8px;
-    background:#fff8df;
-    color:#765b16;
-    display:none;
-}
-
-.status.error{
-    background:#ffe9e9;
-    color:#a21f1f;
-}
-
-/* footer */
 
 footer{
     background:#09150e;
@@ -441,15 +405,13 @@ footer strong{
     color:#e1bd69;
 }
 
-/* responsive */
-
 @media(max-width:800px){
 
-    .hero-title{
+    .hero h1{
         font-size:48px;
     }
 
-    .hero-subtitle{
+    .hero p{
         font-size:15px;
     }
 
@@ -465,11 +427,7 @@ footer strong{
         grid-template-columns:1fr;
     }
 
-    .navbar{
-        padding:16px 5%;
-    }
-
-    .nav-tag{
+    .nav-text{
         display:none;
     }
 
@@ -481,59 +439,59 @@ footer strong{
     .dashboard-header{
         padding:45px 5% 65px;
     }
+
 }
 
 </style>
+
 </head>
 
 <body>
 
-<!-- =========================
-     LANDING PAGE
-========================= -->
 
 <section id="landing">
 
-    <div class="landing-content">
+    <div class="hero">
 
         <div class="badge">
             DATA SCIENCE PROJECT
         </div>
 
-        <h1 class="hero-title">
+        <h1>
             Agricultural
-            <span class="gold">Price Analysis</span>
+            <span>Price Analysis</span>
             System
         </h1>
 
-        <p class="hero-subtitle">
-            Explore agricultural commodity prices, compare yearly trends,
-            analyse price movements and understand market patterns
-            through interactive data visualization.
+        <p>
+            Explore agricultural commodity prices,
+            compare yearly trends, analyse price movements
+            and understand market patterns through
+            interactive data visualization.
         </p>
 
-        <button class="explore-btn" onclick="openDashboard()">
+        <a
+            class="explore"
+            href="#dashboard">
+
             EXPLORE MARKET PRICES →
-        </button>
+
+        </a>
 
     </div>
 
 </section>
 
 
-<!-- =========================
-     DASHBOARD
-========================= -->
-
 <section id="dashboard">
 
     <nav class="navbar">
 
-        <div class="brand">
+        <div class="logo">
             AGRI<span>•</span>INSIGHT
         </div>
 
-        <div class="nav-tag">
+        <div class="nav-text">
             Agricultural Market Price Analysis
         </div>
 
@@ -542,44 +500,55 @@ footer strong{
 
     <header class="dashboard-header">
 
-        <div class="small-label">
+        <div class="dashboard-label">
             DATA ANALYSIS DASHBOARD
         </div>
 
-        <h1>Market Price Intelligence</h1>
+        <h2>
+            Market Price Intelligence
+        </h2>
 
         <p>
-            Analyse daily agricultural produce prices, compare products,
-            observe yearly movements and understand price behaviour
-            using the project dataset.
+            Analyse agricultural produce prices,
+            compare products, observe yearly movements
+            and understand price behaviour using the
+            project dataset.
         </p>
 
     </header>
 
 
-    <!-- CONTROLS -->
-
     <div class="controls">
 
-        <div class="control-box">
+        <div class="control">
 
-            <label>Select Produce</label>
+            <label>
+                Select Produce
+            </label>
 
-            <select id="productSelect">
+            <select id="product">
 
-                <option value="Tomato_Price">Tomato</option>
+                <option value="Tomato">
+                    Tomato
+                </option>
 
-                <option value="Onion_Price">Onion</option>
+                <option value="Onion">
+                    Onion
+                </option>
 
-                <option value="Potato_Price">Potato</option>
+                <option value="Potato">
+                    Potato
+                </option>
 
-                <option value="Cabbage_Price">Cabbage</option>
+                <option value="Cabbage">
+                    Cabbage
+                </option>
 
-                <option value="Cauliflower_Price">
+                <option value="Cauliflower">
                     Cauliflower
                 </option>
 
-                <option value="Brinjal_Price">
+                <option value="Brinjal">
                     Brinjal
                 </option>
 
@@ -588,28 +557,36 @@ footer strong{
         </div>
 
 
-        <div class="control-box">
+        <div class="control">
 
-            <label>Year Filter</label>
+            <label>
+                Year Filter
+            </label>
 
-            <div class="year-buttons">
+            <div class="years">
 
                 <button
-                    class="year-btn active"
-                    onclick="setYear('all',this)">
+                    class="year active"
+                    data-year="all">
+
                     All
+
                 </button>
 
                 <button
-                    class="year-btn"
-                    onclick="setYear('2025',this)">
+                    class="year"
+                    data-year="2025">
+
                     2025
+
                 </button>
 
                 <button
-                    class="year-btn"
-                    onclick="setYear('2026',this)">
+                    class="year"
+                    data-year="2026">
+
                     2026
+
                 </button>
 
             </div>
@@ -621,100 +598,85 @@ footer strong{
 
     <main class="container">
 
-        <div id="status" class="status"></div>
-
-
-        <!-- STATS -->
 
         <h2 class="section-title">
             Price Overview
         </h2>
 
+
         <div class="stats">
 
-            <div class="stat-card">
+            <div class="stat">
 
-                <div class="stat-label">
+                <small>
                     Average Price
-                </div>
+                </small>
 
-                <div
-                    class="stat-value"
-                    id="average">
+                <strong id="average">
                     ₹0.00
-                </div>
+                </strong>
 
             </div>
 
 
-            <div class="stat-card">
+            <div class="stat">
 
-                <div class="stat-label">
+                <small>
                     Minimum Price
-                </div>
+                </small>
 
-                <div
-                    class="stat-value"
-                    id="minimum">
+                <strong id="minimum">
                     ₹0.00
-                </div>
+                </strong>
 
             </div>
 
 
-            <div class="stat-card">
+            <div class="stat">
 
-                <div class="stat-label">
+                <small>
                     Maximum Price
-                </div>
+                </small>
 
-                <div
-                    class="stat-value"
-                    id="maximum">
+                <strong id="maximum">
                     ₹0.00
-                </div>
+                </strong>
 
             </div>
 
         </div>
 
-
-        <!-- TREND -->
 
         <h2 class="section-title">
             Price Trend
         </h2>
 
+
         <div class="chart-card">
 
-            <div class="chart-wrapper">
-
-                <canvas id="priceChart"></canvas>
-
-            </div>
+            <canvas id="chart"></canvas>
 
         </div>
 
-
-        <!-- COMPARISON -->
 
         <h2 class="section-title">
             Product Comparison
         </h2>
 
+
         <div
             class="comparison"
             id="comparison">
+
         </div>
 
-
-        <!-- TABLE -->
 
         <h2 class="section-title">
             Daily Price Records
         </h2>
 
-        <div class="table-card">
+
+        <div class="table-wrap">
 
             <table>
 
@@ -734,126 +696,153 @@ footer strong{
 
                 </thead>
 
-                <tbody id="dataTable"></tbody>
+
+                <tbody id="table">
+
+                </tbody>
 
             </table>
 
         </div>
 
 
-        <!-- PROJECT INFORMATION -->
-
         <h2 class="section-title">
             Project Information
         </h2>
 
+
         <div class="info-grid">
 
-            <div class="info-card">
 
-                <h3>Problem Statement</h3>
+            <div class="info">
+
+                <h3>
+                    Problem Statement
+                </h3>
 
                 <p>
-                    Agricultural prices change frequently due to supply,
-                    demand, seasonal conditions and market factors.
-                    This project provides a simple analytical system
-                    to study agricultural produce price movements.
+                    Agricultural prices change frequently
+                    due to supply, demand, seasonal conditions
+                    and market factors. This project provides
+                    a simple analytical system to study
+                    agricultural produce price movements.
                 </p>
 
             </div>
 
 
-            <div class="info-card">
+            <div class="info">
 
-                <h3>Objectives</h3>
+                <h3>
+                    Objectives
+                </h3>
 
                 <p>
-                    Analyse agricultural price data, calculate average,
-                    minimum and maximum prices, compare different
-                    commodities and visualize price trends.
+                    Analyse agricultural price data,
+                    calculate average, minimum and maximum
+                    prices, compare different commodities
+                    and visualize price trends.
                 </p>
 
             </div>
 
 
-            <div class="info-card">
+            <div class="info">
 
-                <h3>Methodology</h3>
+                <h3>
+                    Methodology
+                </h3>
 
                 <p>
-                    The dataset is stored in CSV format. JavaScript
-                    loads the dataset, processes the numerical values,
-                    calculates statistical measures and displays
-                    interactive visualizations.
+                    The dataset is stored in CSV format.
+                    The system processes numerical values,
+                    calculates statistical measures and
+                    displays price trends through data
+                    visualization.
                 </p>
 
             </div>
 
 
-            <div class="info-card">
+            <div class="info">
 
-                <h3>Technologies Used</h3>
+                <h3>
+                    Technologies Used
+                </h3>
 
                 <p>
-                    HTML, CSS, JavaScript, CSV Dataset, GitHub,
-                    GitHub Pages and Chart.js.
+                    HTML, CSS, JavaScript, CSV Dataset,
+                    GitHub and GitHub Pages.
                 </p>
 
             </div>
 
 
-            <div class="info-card">
+            <div class="info">
 
-                <h3>Scope</h3>
+                <h3>
+                    Scope
+                </h3>
 
                 <p>
-                    The system can be extended with more agricultural
-                    commodities, longer time periods, geographical
-                    market information and real-time market data.
+                    The system can be extended with more
+                    agricultural commodities, longer time
+                    periods, geographical market information
+                    and real-time market data.
                 </p>
 
             </div>
 
 
-            <div class="info-card">
+            <div class="info">
 
-                <h3>Expected Outcome</h3>
+                <h3>
+                    Expected Outcome
+                </h3>
 
                 <p>
-                    A user-friendly analytical dashboard that helps
-                    understand agricultural price behaviour through
-                    statistics, comparisons, tables and graphs.
+                    A user-friendly analytical dashboard
+                    that helps understand agricultural
+                    price behaviour through statistics,
+                    comparisons, tables and graphs.
                 </p>
 
             </div>
 
 
-            <div class="info-card">
+            <div class="info">
 
-                <h3>Conclusion</h3>
+                <h3>
+                    Conclusion
+                </h3>
 
                 <p>
-                    The project demonstrates how data analysis and
-                    visualization can transform agricultural price
-                    records into useful information for understanding
-                    market trends.
+                    The project demonstrates how data
+                    analysis and visualization can transform
+                    agricultural price records into useful
+                    information for understanding market
+                    trends.
                 </p>
 
             </div>
 
 
-            <div class="info-card">
+            <div class="info">
 
-                <h3>Dataset Note</h3>
+                <h3>
+                    Dataset Note
+                </h3>
 
                 <p>
-                    The current dataset is academic/sample data
-                    prepared for project demonstration and analysis.
-                    It should not be treated as verified real-time
-                    mandi or market prices.
+                    The current dataset is academic/sample
+                    data prepared for project demonstration
+                    and analysis. It should not be treated
+                    as verified real-time mandi or market
+                    prices.
                 </p>
 
             </div>
+
 
         </div>
 
@@ -862,7 +851,9 @@ footer strong{
 
     <footer>
 
-        <strong>Market Price Trend Analysis for Agricultural Produce</strong>
+        <strong>
+            Market Price Trend Analysis for Agricultural Produce
+        </strong>
 
         <br>
 
@@ -874,873 +865,516 @@ footer strong{
 
     </footer>
 
+
 </section>
 
 
 <script>
 
-let allData = [];
-let currentYear = "all";
-let chart = null;
-let csvFileName = "";
-
-/* ==========================================
-   OPEN DASHBOARD
-========================================== */
-
-function openDashboard(){
-
-    document.getElementById("landing").style.display = "none";
-
-    document.getElementById("dashboard").style.display = "block";
-
-    window.scrollTo({
-        top:0,
-        behavior:"instant"
-    });
-
-    loadCSV();
-
-}
-
-
-/* ==========================================
-   STATUS MESSAGE
-========================================== */
-
-function showStatus(message,isError=false){
-
-    const box = document.getElementById("status");
-
-    box.innerText = message;
-
-    box.style.display = "block";
-
-    if(isError){
-        box.classList.add("error");
-    }else{
-        box.classList.remove("error");
-    }
-
-}
-
-
-function hideStatus(){
-
-    document.getElementById("status").style.display = "none";
-
-}
-
-
-/* ==========================================
-   FIND CSV FROM GITHUB REPOSITORY
-========================================== */
-
-async function findCSV(){
-
-    const apiURL =
-    "https://api.github.com/repos/mohdzahidansari2024-pixel/agriculture-produce-price-analysis/contents/";
-
-    const response = await fetch(apiURL);
-
-    if(!response.ok){
-
-        throw new Error(
-            "Unable to access GitHub repository."
-        );
-
-    }
-
-    const files = await response.json();
-
-    const csv = files.find(file =>
-        file.type === "file" &&
-        file.name.toLowerCase().endsWith(".csv")
-    );
-
-    if(!csv){
-
-        throw new Error(
-            "CSV file was not found in the GitHub repository."
-        );
-
-    }
-
-    csvFileName = csv.name;
-
-    return csv.download_url;
-
-}
-
-
-/* ==========================================
-   LOAD CSV
-========================================== */
-
-async function loadCSV(){
-
-    try{
-
-        showStatus(
-            "Loading agricultural price dataset..."
-        );
-
-        const csvURL = await findCSV();
-
-        const response = await fetch(
-            csvURL + "?v=" + Date.now()
-        );
-
-        if(!response.ok){
-
-            throw new Error(
-                "Unable to download CSV file."
-            );
-
-        }
-
-        const csvText = await response.text();
-
-        allData = parseCSV(csvText);
-
-        if(!allData.length){
-
-            throw new Error(
-                "CSV was found but no valid data records were detected."
-            );
-
-        }
-
-        hideStatus();
-
-        updateDashboard();
-
-        createComparison();
-
-        createTable();
-
-    }
-
-    catch(error){
-
-        console.error(error);
-
-        showStatus(
-            "Dataset loading failed: " + error.message,
-            true
-        );
-
-        document.getElementById("average").innerText = "₹0.00";
-        document.getElementById("minimum").innerText = "₹0.00";
-        document.getElementById("maximum").innerText = "₹0.00";
-
-    }
-
-}
-
-
-/* ==========================================
-   CSV PARSER
-========================================== */
-
-function parseCSV(text){
-
-    const lines = text
-        .replace(/\r/g,"")
-        .trim()
-        .split("\n");
-
-    if(lines.length < 2){
-
-        return [];
-
-    }
-
-    const headers = splitCSVLine(lines[0])
-        .map(h =>
-            h.trim()
-             .replace(/^"|"$/g,"")
-        );
-
-    const result = [];
-
-    for(let i=1;i<lines.length;i++){
-
-        if(!lines[i].trim()) continue;
-
-        const values = splitCSVLine(lines[i]);
-
-        const row = {};
-
-        headers.forEach((header,index)=>{
-
-            row[header] =
-                values[index] !== undefined
-                ? values[index].trim().replace(/^"|"$/g,"")
-                : "";
-
-        });
-
-        result.push(row);
-
-    }
-
-    return result;
-
-}
-
-
-/* ==========================================
-   HANDLE CSV COMMAS / QUOTES
-========================================== */
-
-function splitCSVLine(line){
-
-    const result = [];
-
-    let current = "";
-
-    let insideQuotes = false;
-
-    for(let i=0;i<line.length;i++){
-
-        const char = line[i];
-
-        if(char === '"'){
-
-            if(
-                insideQuotes &&
-                line[i+1] === '"'
-            ){
-
-                current += '"';
-
-                i++;
-
-            }else{
-
-                insideQuotes = !insideQuotes;
-
-            }
-
-        }
-
-        else if(
-            char === "," &&
-            !insideQuotes
-        ){
-
-            result.push(current);
-
-            current = "";
-
-        }
-
-        else{
-
-            current += char;
-
-        }
-
-    }
-
-    result.push(current);
-
-    return result;
-
-}
-
-
-/* ==========================================
-   CLEAN NUMBERS
-========================================== */
-
-function cleanNumber(value){
-
-    if(value === undefined || value === null){
-
-        return 0;
-
-    }
-
-    const cleaned = String(value)
-        .replace(/₹/g,"")
-        .replace(/,/g,"")
-        .trim();
-
-    const number = parseFloat(cleaned);
-
-    return Number.isFinite(number)
-        ? number
-        : 0;
-
-}
-
-
-/* ==========================================
-   NORMALIZE PRODUCT COLUMN
-========================================== */
-
-function getProductValue(row,column){
-
-    if(row[column] !== undefined){
-
-        return cleanNumber(row[column]);
-
-    }
-
-    const possibleNames = {
-
-        Tomato_Price:[
-            "Tomato_Price",
-            "Tomato Price",
-            "Tomato"
-        ],
-
-        Onion_Price:[
-            "Onion_Price",
-            "Onion Price",
-            "Onion"
-        ],
-
-        Potato_Price:[
-            "Potato_Price",
-            "Potato Price",
-            "Potato",
-            "potato_price"
-        ],
-
-        Cabbage_Price:[
-            "Cabbage_Price",
-            "Cabbage Price",
-            "Cabbage"
-        ],
-
-        Cauliflower_Price:[
-            "Cauliflower_Price",
-            "Cauliflower Price",
-            "Cauliflower"
-        ],
-
-        Brinjal_Price:[
-            "Brinjal_Price",
-            "Brinjal Price",
-            "Brinjal"
-        ]
-
-    };
-
-    const names = possibleNames[column] || [];
-
-    for(const name of names){
-
-        if(row[name] !== undefined){
-
-            return cleanNumber(row[name]);
-
-        }
-
-    }
-
-    return 0;
-
-}
-
-
-/* ==========================================
-   GET YEAR FROM DATE
-========================================== */
-
-function getYear(dateString){
-
-    if(!dateString){
-
-        return "";
-
-    }
-
-    const value = String(dateString).trim();
-
-    /* DD-MM-YYYY */
-
-    let match = value.match(
-        /^(\d{1,2})-(\d{1,2})-(\d{4})$/
-    );
-
-    if(match){
-
-        return match[3];
-
-    }
-
-    /* YYYY-MM-DD */
-
-    match = value.match(
-        /^(\d{4})-(\d{1,2})-(\d{1,2})$/
-    );
-
-    if(match){
-
-        return match[1];
-
-    }
-
-    /* Search four digit year */
-
-    const yearMatch = value.match(/\d{4}/);
-
-    return yearMatch
-        ? yearMatch[0]
-        : "";
-
-}
-
-
-/* ==========================================
-   DATE SORTING
-========================================== */
-
-function dateToTime(dateString){
-
-    if(!dateString){
-
-        return 0;
-
-    }
-
-    const value = String(dateString).trim();
-
-    let match =
-        value.match(
-            /^(\d{1,2})-(\d{1,2})-(\d{4})$/
-        );
-
-    if(match){
-
-        return new Date(
-            Number(match[3]),
-            Number(match[2])-1,
-            Number(match[1])
-        ).getTime();
-
-    }
-
-    const time = new Date(value).getTime();
-
-    return Number.isNaN(time)
-        ? 0
-        : time;
-
-}
-
-
-/* ==========================================
-   FILTER DATA
-========================================== */
-
-function getFilteredData(){
-
-    if(currentYear === "all"){
-
-        return [...allData];
-
-    }
-
-    return allData.filter(row =>
-        getYear(row.Date) === currentYear
-    );
-
-}
-
-
-/* ==========================================
-   UPDATE MAIN DASHBOARD
-========================================== */
-
-function updateDashboard(){
-
-    const product =
-        document.getElementById("productSelect").value;
-
-    const data =
-        getFilteredData();
-
-    const prices =
-        data
-        .map(row =>
-            getProductValue(row,product)
-        )
-        .filter(value =>
-            Number.isFinite(value)
-        );
-
-    if(!prices.length){
-
-        document.getElementById("average").innerText =
-            "₹0.00";
-
-        document.getElementById("minimum").innerText =
-            "₹0.00";
-
-        document.getElementById("maximum").innerText =
-            "₹0.00";
-
-        createChart(product);
-
-        return;
-
-    }
-
-    const total =
-        prices.reduce(
-            (sum,value)=>sum+value,
-            0
-        );
-
-    const average =
-        total / prices.length;
-
-    const minimum =
-        Math.min(...prices);
-
-    const maximum =
-        Math.max(...prices);
-
-
-    document.getElementById("average").innerText =
-        "₹" + average.toFixed(2);
-
-    document.getElementById("minimum").innerText =
-        "₹" + minimum.toFixed(2);
-
-    document.getElementById("maximum").innerText =
-        "₹" + maximum.toFixed(2);
-
-
-    createChart(product);
-
-}
-
-
-/* ==========================================
-   PRODUCT NAME
-========================================== */
-
-function productName(column){
-
-    const names = {
-
-        Tomato_Price:"Tomato",
-
-        Onion_Price:"Onion",
-
-        Potato_Price:"Potato",
-
-        Cabbage_Price:"Cabbage",
-
-        Cauliflower_Price:"Cauliflower",
-
-        Brinjal_Price:"Brinjal"
-
-    };
-
-    return names[column] || column;
-
-}
-
-
-/* ==========================================
-   CREATE TREND CHART
-========================================== */
-
-function createChart(product){
-
-    const data =
-        getFilteredData()
-        .sort(
-            (a,b)=>
-            dateToTime(a.Date) -
-            dateToTime(b.Date)
-        );
-
-    const labels =
-        data.map(row => row.Date);
-
-    const prices =
-        data.map(row =>
-            getProductValue(row,product)
-        );
-
-
-    const canvas =
-        document.getElementById("priceChart");
-
-    if(chart){
-
-        chart.destroy();
-
-    }
-
-
-    chart =
-        new Chart(
-            canvas.getContext("2d"),
-            {
-
-                type:"line",
-
-                data:{
-
-                    labels:labels,
-
-                    datasets:[{
-
-                        label:
-                            productName(product)
-                            + " Price (₹/kg)",
-
-                        data:prices,
-
-                        borderColor:"#b88932",
-
-                        backgroundColor:
-                            "rgba(184,137,50,0.12)",
-
-                        borderWidth:3,
-
-                        fill:true,
-
-                        tension:.35,
-
-                        pointRadius:3,
-
-                        pointHoverRadius:6
-
-                    }]
-
-                },
-
-                options:{
-
-                    responsive:true,
-
-                    maintainAspectRatio:false,
-
-                    interaction:{
-
-                        intersect:false,
-
-                        mode:"index"
-
-                    },
-
-                    plugins:{
-
-                        legend:{
-
-                            display:true
-
-                        },
-
-                        tooltip:{
-
-                            callbacks:{
-
-                                label:function(context){
-
-                                    return " ₹"
-                                        + Number(
-                                            context.raw
-                                        ).toFixed(2)
-                                        + " / kg";
-
-                                }
-
-                            }
-
-                        }
-
-                    },
-
-                    scales:{
-
-                        y:{
-
-                            beginAtZero:false,
-
-                            title:{
-
-                                display:true,
-
-                                text:
-                                    "Price (₹ per kg)"
-
-                            }
-
-                        },
-
-                        x:{
-
-                            title:{
-
-                                display:true,
-
-                                text:"Date"
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        );
-
-}
-
-
-/* ==========================================
-   YEAR FILTER
-========================================== */
-
-function setYear(year,button){
-
-    currentYear = year;
-
-    document
-        .querySelectorAll(".year-btn")
-        .forEach(btn =>
-            btn.classList.remove("active")
-        );
-
-    button.classList.add("active");
-
-    updateDashboard();
-
-    createComparison();
-
-    createTable();
-
-}
-
-
-/* ==========================================
-   PRODUCT SELECT CHANGE
-========================================== */
-
-document
-    .getElementById("productSelect")
-    .addEventListener(
-        "change",
-        function(){
-
-            updateDashboard();
-
-        }
-    );
-
-
-/* ==========================================
-   PRODUCT COMPARISON
-========================================== */
-
-function createComparison(){
-
-    const products = [
-
-        "Tomato_Price",
-        "Onion_Price",
-        "Potato_Price",
-        "Cabbage_Price",
-        "Cauliflower_Price",
-        "Brinjal_Price"
-
-    ];
-
-    const data =
-        getFilteredData();
-
-    const comparison =
-        document.getElementById("comparison");
-
-    comparison.innerHTML = "";
-
-
-    const averages = products.map(product => {
-
-        const values =
-            data
-            .map(row =>
-                getProductValue(row,product)
-            )
-            .filter(value =>
-                value > 0
-            );
-
-        const average =
-            values.length
-            ? values.reduce(
-                (sum,value)=>sum+value,
-                0
-              ) / values.length
-            : 0;
+const sampleData = [
+
+["01-09-2025",30,34,23,26,39,32],
+["02-09-2025",31,35,24,27,40,33],
+["03-09-2025",32,36,25,28,41,34],
+["04-09-2025",31,35,24,27,40,33],
+["05-09-2025",33,37,26,29,42,35],
+["06-09-2025",34,38,27,30,43,36],
+["07-09-2025",32,36,25,28,41,34],
+["08-09-2025",31,35,24,27,40,33],
+["09-09-2025",30,34,23,26,39,32],
+["10-09-2025",29,33,22,25,38,31],
+["11-09-2025",31,35,24,27,40,33],
+["12-09-2025",33,37,26,29,42,35],
+["13-09-2025",35,39,28,31,44,37],
+["14-09-2025",34,38,27,30,43,36],
+["15-09-2025",32,36,25,28,41,34],
+["16-09-2025",31,35,24,27,40,33],
+["17-09-2025",33,37,26,29,42,35],
+["18-09-2025",36,40,29,32,45,38],
+["19-09-2025",37,41,30,33,46,39],
+["20-09-2025",35,39,28,31,44,37],
+["21-09-2025",33,37,26,29,42,35],
+["22-09-2025",32,36,25,28,41,34],
+["23-09-2025",34,38,27,30,43,36],
+["24-09-2025",36,40,29,32,45,38],
+["25-09-2025",38,42,31,34,47,40],
+["26-09-2025",37,41,30,33,46,39],
+["27-09-2025",35,39,28,31,44,37],
+["28-09-2025",34,38,27,30,43,36],
+["29-09-2025",36,40,29,32,45,38],
+["30-09-2025",39,43,32,35,48,41],
+
+["01-09-2026",32,36,25,28,42,35],
+["02-09-2026",33,37,26,29,43,36],
+["03-09-2026",35,39,27,30,45,38],
+["04-09-2026",34,38,26,29,44,37],
+["05-09-2026",36,40,28,31,46,39],
+["06-09-2026",37,41,29,32,47,40],
+["07-09-2026",35,39,27,30,45,38],
+["08-09-2026",34,38,26,29,44,37],
+["09-09-2026",33,37,25,28,43,36],
+["10-09-2026",32,36,24,27,42,35],
+["11-09-2026",34,38,26,29,44,37],
+["12-09-2026",36,40,27,31,46,39],
+["13-09-2026",38,42,29,33,48,41],
+["14-09-2026",37,41,28,32,47,40],
+["15-09-2026",35,39,27,30,45,38],
+["16-09-2026",34,38,26,29,44,37],
+["17-09-2026",36,40,28,31,46,39],
+["18-09-2026",39,43,30,34,49,42],
+["19-09-2026",40,44,31,35,50,43],
+["20-09-2026",38,42,29,33,48,41],
+["21-09-2026",36,40,28,31,46,39],
+["22-09-2026",35,39,27,30,45,38],
+["23-09-2026",37,41,29,32,47,40],
+["24-09-2026",39,43,30,34,49,42],
+["25-09-2026",41,45,32,36,51,44],
+["26-09-2026",40,44,31,35,50,43],
+["27-09-2026",38,42,30,33,48,41],
+["28-09-2026",37,41,29,32,47,40],
+["29-09-2026",39,43,30,34,49,42],
+["30-09-2026",42,46,33,37,52,45]
+
+];
+
+
+let data = [];
+
+let selectedYear = "all";
+
+let selectedProduct = "Tomato";
+
+    function makeData(){
+
+    return sampleData.map(row => {
 
         return {
 
-            product:product,
+            Date:row[0],
 
-            average:average
+            Tomato:row[1],
+
+            Onion:row[2],
+
+            Potato:row[3],
+
+            Cabbage:row[4],
+
+            Cauliflower:row[5],
+
+            Brinjal:row[6]
 
         };
 
     });
 
+}
 
-    const maxAverage =
+
+data = makeData();
+
+
+function getYear(date){
+
+    return date.split("-")[2];
+
+}
+
+
+function filteredData(){
+
+    if(selectedYear === "all"){
+
+        return data;
+
+    }
+
+    return data.filter(
+        row => getYear(row.Date) === selectedYear
+    );
+
+}
+
+
+function updateStats(){
+
+    const rows = filteredData();
+
+    const prices = rows.map(
+        row => Number(row[selectedProduct])
+    );
+
+
+    const total = prices.reduce(
+        (a,b) => a+b,
+        0
+    );
+
+
+    const average =
+        total / prices.length;
+
+
+    const minimum =
+        Math.min(...prices);
+
+
+    const maximum =
+        Math.max(...prices);
+
+
+    document.getElementById("average")
+        .innerText =
+        "₹" + average.toFixed(2);
+
+
+    document.getElementById("minimum")
+        .innerText =
+        "₹" + minimum.toFixed(2);
+
+
+    document.getElementById("maximum")
+        .innerText =
+        "₹" + maximum.toFixed(2);
+
+}
+
+
+function drawChart(){
+
+    const canvas =
+        document.getElementById("chart");
+
+
+    const ctx =
+        canvas.getContext("2d");
+
+
+    const width =
+        canvas.clientWidth;
+
+
+    const height =
+        400;
+
+
+    const ratio =
+        window.devicePixelRatio || 1;
+
+
+    canvas.width =
+        width * ratio;
+
+
+    canvas.height =
+        height * ratio;
+
+
+    ctx.scale(ratio,ratio);
+
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    const rows =
+        filteredData();
+
+
+    const values =
+        rows.map(
+            row => Number(row[selectedProduct])
+        );
+
+
+    if(!values.length) return;
+
+
+    const left = 55;
+
+    const right = 20;
+
+    const top = 30;
+
+    const bottom = 45;
+
+
+    const graphWidth =
+        width-left-right;
+
+
+    const graphHeight =
+        height-top-bottom;
+
+
+    const min =
+        Math.min(...values)-2;
+
+
+    const max =
+        Math.max(...values)+2;
+
+
+    ctx.strokeStyle =
+        "#e3e5df";
+
+    ctx.lineWidth = 1;
+
+
+    for(let i=0;i<=5;i++){
+
+        const y =
+            top +
+            (graphHeight/5)*i;
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(left,y);
+
+        ctx.lineTo(width-right,y);
+
+        ctx.stroke();
+
+
+        const value =
+            max -
+            ((max-min)/5)*i;
+
+
+        ctx.fillStyle =
+            "#68736d";
+
+        ctx.font =
+            "12px Arial";
+
+        ctx.fillText(
+            "₹"+value.toFixed(0),
+            8,
+            y+4
+        );
+
+    }
+
+
+    ctx.beginPath();
+
+
+    values.forEach(
+        (value,index)=>{
+
+            const x =
+                left +
+                (index/(values.length-1))
+                *graphWidth;
+
+
+            const y =
+                top +
+                ((max-value)/(max-min))
+                *graphHeight;
+
+
+            if(index===0){
+
+                ctx.moveTo(x,y);
+
+            }else{
+
+                ctx.lineTo(x,y);
+
+            }
+
+        }
+    );
+
+
+    ctx.strokeStyle =
+        "#b88932";
+
+    ctx.lineWidth = 3;
+
+    ctx.stroke();
+
+
+    values.forEach(
+        (value,index)=>{
+
+            const x =
+                left +
+                (index/(values.length-1))
+                *graphWidth;
+
+
+            const y =
+                top +
+                ((max-value)/(max-min))
+                *graphHeight;
+
+
+            ctx.beginPath();
+
+            ctx.arc(
+                x,
+                y,
+                3,
+                0,
+                Math.PI*2
+            );
+
+
+            ctx.fillStyle =
+                "#b88932";
+
+            ctx.fill();
+
+        }
+    );
+
+
+    ctx.fillStyle =
+        "#68736d";
+
+    ctx.font =
+        "11px Arial";
+
+
+    const step =
         Math.max(
-            ...averages.map(item =>
-                item.average
+            1,
+            Math.ceil(values.length/8)
+        );
+
+
+    for(
+        let i=0;
+        i<rows.length;
+        i+=step
+    ){
+
+        const x =
+            left +
+            (i/(values.length-1))
+            *graphWidth;
+
+
+        ctx.fillText(
+            rows[i].Date,
+            x-25,
+            height-15
+        );
+
+    }
+
+
+    ctx.fillStyle =
+        "#183b27";
+
+    ctx.font =
+        "bold 15px Arial";
+
+
+    ctx.fillText(
+        selectedProduct +
+        " Price Trend (₹/kg)",
+        left,
+        18
+    );
+
+}
+
+
+function updateComparison(){
+
+    const container =
+        document.getElementById("comparison");
+
+
+    container.innerHTML = "";
+
+
+    const products = [
+
+        "Tomato",
+        "Onion",
+        "Potato",
+        "Cabbage",
+        "Cauliflower",
+        "Brinjal"
+
+    ];
+
+
+    const averages = products.map(
+        product => {
+
+            const rows =
+                filteredData();
+
+
+            const total =
+                rows.reduce(
+                    (sum,row)=>
+                    sum + Number(row[product]),
+                    0
+                );
+
+
+            return {
+
+                name:product,
+
+                average:
+                    total / rows.length
+
+            };
+
+        }
+    );
+
+
+    const max =
+        Math.max(
+            ...averages.map(
+                x=>x.average
             )
         );
 
 
     averages.forEach(item => {
 
-        const card =
+        const percentage =
+            (item.average/max)*100;
+
+
+        const div =
             document.createElement("div");
 
-        card.className =
-            "compare-card";
+
+        div.className =
+            "compare";
 
 
-        let percentage = 0;
-
-        if(maxAverage > 0){
-
-            percentage =
-                (item.average / maxAverage) * 100;
-
-        }
-
-
-        card.innerHTML = `
+        div.innerHTML = `
 
             <div class="compare-name">
-                ${productName(item.product)}
+                ${item.name}
             </div>
 
             <div class="compare-price">
                 ₹${item.average.toFixed(2)}
             </div>
 
-            <div class="compare-bar">
+            <div class="bar">
 
                 <div
-                    class="compare-fill"
+                    class="bar-fill"
                     style="width:${percentage}%">
+
                 </div>
 
             </div>
@@ -1748,35 +1382,23 @@ function createComparison(){
         `;
 
 
-        comparison.appendChild(card);
+        container.appendChild(div);
 
     });
 
 }
 
 
-/* ==========================================
-   DAILY DATA TABLE
-========================================== */
+function updateTable(){
 
-function createTable(){
-
-    const tbody =
-        document.getElementById("dataTable");
-
-    tbody.innerHTML = "";
+    const table =
+        document.getElementById("table");
 
 
-    const data =
-        getFilteredData()
-        .sort(
-            (a,b)=>
-            dateToTime(a.Date) -
-            dateToTime(b.Date)
-        );
+    table.innerHTML = "";
 
 
-    data.forEach(row => {
+    filteredData().forEach(row => {
 
         const tr =
             document.createElement("tr");
@@ -1784,75 +1406,231 @@ function createTable(){
 
         tr.innerHTML = `
 
-            <td>${row.Date || "-"}</td>
+            <td>${row.Date}</td>
 
-            <td>
-                ₹${getProductValue(
-                    row,
-                    "Tomato_Price"
-                ).toFixed(2)}
-            </td>
+            <td>₹${row.Tomato.toFixed(2)}</td>
 
-            <td>
-                ₹${getProductValue(
-                    row,
-                    "Onion_Price"
-                ).toFixed(2)}
-            </td>
+            <td>₹${row.Onion.toFixed(2)}</td>
 
-            <td>
-                ₹${getProductValue(
-                    row,
-                    "Potato_Price"
-                ).toFixed(2)}
-            </td>
+            <td>₹${row.Potato.toFixed(2)}</td>
 
-            <td>
-                ₹${getProductValue(
-                    row,
-                    "Cabbage_Price"
-                ).toFixed(2)}
-            </td>
+            <td>₹${row.Cabbage.toFixed(2)}</td>
 
-            <td>
-                ₹${getProductValue(
-                    row,
-                    "Cauliflower_Price"
-                ).toFixed(2)}
-            </td>
+            <td>₹${row.Cauliflower.toFixed(2)}</td>
 
-            <td>
-                ₹${getProductValue(
-                    row,
-                    "Brinjal_Price"
-                ).toFixed(2)}
-            </td>
+            <td>₹${row.Brinjal.toFixed(2)}</td>
 
         `;
 
 
-        tbody.appendChild(tr);
+        table.appendChild(tr);
 
     });
 
 }
 
 
-/* ==========================================
-   INITIAL DATA LOAD
-========================================== */
+function updateAll(){
 
-console.log(
-    "Agricultural Price Analysis System loaded successfully."
+    updateStats();
+
+    drawChart();
+
+    updateComparison();
+
+    updateTable();
+
+}
+
+
+document
+    .getElementById("product")
+    .addEventListener(
+        "change",
+        function(){
+
+            selectedProduct =
+                this.value;
+
+            updateAll();
+
+        }
+    );
+
+
+document
+    .querySelectorAll(".year")
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            function(){
+
+                document
+                    .querySelectorAll(".year")
+                    .forEach(
+                        b =>
+                        b.classList.remove("active")
+                    );
+
+
+                this.classList.add("active");
+
+
+                selectedYear =
+                    this.dataset.year;
+
+
+                updateAll();
+
+            }
+        );
+
+    });
+
+
+window.addEventListener(
+    "resize",
+    drawChart
 );
+
+
+updateAll();
+
+
+async function tryLoadCSV(){
+
+    try{
+
+        const api =
+        "https://api.github.com/repos/mohdzahidansari2024-pixel/agriculture-produce-price-analysis/contents/";
+
+
+        const response =
+            await fetch(api);
+
+
+        if(!response.ok) return;
+
+
+        const files =
+            await response.json();
+
+
+        const csv =
+            files.find(
+                file =>
+                file.type === "file" &&
+                file.name
+                .toLowerCase()
+                .endsWith(".csv")
+            );
+
+
+        if(!csv) return;
+
+
+        const csvResponse =
+            await fetch(
+                csv.download_url +
+                "?v=" +
+                Date.now()
+            );
+
+
+        if(!csvResponse.ok) return;
+
+
+        const text =
+            await csvResponse.text();
+
+
+        const lines =
+            text
+            .replace(/\r/g,"")
+            .trim()
+            .split("\n");
+
+
+        if(lines.length < 2) return;
+
+
+        const csvData = [];
+
+
+        for(
+            let i=1;
+            i<lines.length;
+            i++
+        ){
+
+            const values =
+                lines[i]
+                .split(",")
+                .map(
+                    x =>
+                    x.trim()
+                    .replace(/"/g,"")
+                );
+
+
+            if(values.length < 7)
+                continue;
+
+
+            csvData.push({
+
+                Date:values[0],
+
+                Tomato:
+                    Number(values[1]),
+
+                Onion:
+                    Number(values[2]),
+
+                Potato:
+                    Number(values[3]),
+
+                Cabbage:
+                    Number(values[4]),
+
+                Cauliflower:
+                    Number(values[5]),
+
+                Brinjal:
+                    Number(values[6])
+
+            });
+
+        }
+
+
+        if(csvData.length > 0){
+
+            data =
+                csvData;
+
+            updateAll();
+
+        }
+
+    }
+
+    catch(error){
+
+        console.log(
+            "Using project sample dataset."
+        );
+
+    }
+
+}
+
+
+tryLoadCSV();
 
 </script>
 
 </body>
+
 </html>
-
-
-
-
-
- 
