@@ -148,434 +148,935 @@ footer{margin-top:60px;padding:35px 20px;text-align:center;border-top:1px solid 
 let allData=[];
 let currentYear="all";
 let chaRT;
-  
-  function openDashboard(){
-document.getElementById("landing").style.display="none";
-document.getElementById("dashboard").style.display="block";
-window.scrollTo(0,0);
-}
 
-function parseCSVLine(line){
-const result=[];
-let current="";
-let insideQuotes=false;
+ <script>
 
-for(let i=0;i<line.length;i++){
+function openDashboard(){
 
-const ch=line[i];
+    document.getElementById("landing").style.display="none";
 
-if(ch==='"'){
+    document.getElementById("dashboard").style.display="block";
 
-if(insideQuotes && line[i+1]==='"'){
-current+='"';
-i++;
-}else{
-insideQuotes=!insideQuotes;
-}
-
-}else if(ch===',' && !insideQuotes){
-
-result.push(current.trim());
-current="";
-
-}else{
-
-current+=ch;
+    window.scrollTo(0,0);
 
 }
 
+
+/* ==============================
+   VARIABLES
+============================== */
+
+let allData = [];
+
+let currentYear = "all";
+
+let chart = null;
+
+
+/* ==============================
+   GITHUB CSV LOADER
+============================== */
+
+async function loadCSV(){
+
+    try{
+
+        /*
+        GitHub repository ka naam
+        */
+
+        const apiURL =
+        "https://api.github.com/repos/mohdzahidansari2024-pixel/agriculture-produce-price-analysis/contents/";
+
+        const response =
+        await fetch(apiURL);
+
+        if(!response.ok){
+
+            throw new Error(
+                "GitHub repository access failed."
+            );
+
+        }
+
+
+        const files =
+        await response.json();
+
+
+        /*
+        Repository mein CSV file automatically find karega
+        */
+
+        const csvFile =
+        files.find(file =>
+            file.name.toLowerCase().endsWith(".csv")
+        );
+
+
+        if(!csvFile){
+
+            throw new Error(
+                "CSV file GitHub repository mein nahi mili."
+            );
+
+        }
+
+
+        console.log(
+            "CSV found:",
+            csvFile.name
+        );
+
+
+        /*
+        CSV ka download URL
+        */
+
+        const csvResponse =
+        await fetch(csvFile.download_url);
+
+
+        if(!csvResponse.ok){
+
+            throw new Error(
+                "CSV download nahi ho rahi."
+            );
+
+        }
+
+
+        const csvText =
+        await csvResponse.text();
+
+
+        console.log(
+            "CSV loaded successfully."
+        );
+
+
+        parseCSV(csvText);
+
+
+    }
+
+    catch(error){
+
+        console.error(
+            "CSV ERROR:",
+            error
+        );
+
+
+        document.getElementById(
+            "dataTable"
+        ).innerHTML = `
+
+        <tr>
+
+        <td colspan="7">
+
+        CSV data load nahi hua.
+
+        <br><br>
+
+        GitHub repository mein CSV file check karo.
+
+        </td>
+
+        </tr>
+
+        `;
+
+    }
+
 }
 
-result.push(current.trim());
 
-return result;
+/* ==============================
+   CSV PARSER
+============================== */
+
+function parseCSV(csvText){
+
+    csvText =
+    csvText.replace(/^\uFEFF/,"");
+
+
+    const lines =
+    csvText
+    .trim()
+    .split(/\r?\n/);
+
+
+    if(lines.length < 2){
+
+        throw new Error(
+            "CSV mein data nahi hai."
+        );
+
+    }
+
+
+    /*
+    First row = headers
+    */
+
+    const headers =
+    splitCSVLine(lines[0])
+    .map(header =>
+
+        header
+        .replace(/^"|"$/g,"")
+        .trim()
+
+    );
+
+
+    console.log(
+        "CSV HEADERS:",
+        headers
+    );
+
+
+    /*
+    Data rows
+    */
+
+    allData = [];
+
+
+    for(
+        let i=1;
+        i<lines.length;
+        i++
+    ){
+
+        if(!lines[i].trim())
+            continue;
+
+
+        const values =
+        splitCSVLine(lines[i]);
+
+
+        const row = {};
+
+
+        headers.forEach(
+            (header,index)=>{
+
+                row[header] =
+                values[index] || "";
+
+            }
+        );
+
+
+        /*
+        Date zaroor honi chahiye
+        */
+
+        if(row.Date){
+
+            row.Tomato_Price =
+            cleanNumber(
+                row.Tomato_Price
+            );
+
+            row.Onion_Price =
+            cleanNumber(
+                row.Onion_Price
+            );
+
+            row.Potato_Price =
+            cleanNumber(
+                row.Potato_Price
+            );
+
+            row.Cabbage_Price =
+            cleanNumber(
+                row.Cabbage_Price
+            );
+
+            row.Cauliflower_Price =
+            cleanNumber(
+                row.Cauliflower_Price
+            );
+
+            row.Brinjal_Price =
+            cleanNumber(
+                row.Brinjal_Price
+            );
+
+
+            allData.push(row);
+
+        }
+
+    }
+
+
+    console.log(
+        "TOTAL ROWS:",
+        allData.length
+    );
+
+
+    if(allData.length === 0){
+
+        throw new Error(
+            "CSV rows read nahi ho rahe."
+        );
+
+    }
+
+
+    updateDashboard();
+
+    createComparison();
+
+    createTable();
+
 }
+
+
+/* ==============================
+   CSV LINE SPLITTER
+============================== */
+
+function splitCSVLine(line){
+
+    const result = [];
+
+    let current = "";
+
+    let insideQuotes = false;
+
+
+    for(
+        let i=0;
+        i<line.length;
+        i++
+    ){
+
+        const char =
+        line[i];
+
+
+        if(char === '"'){
+
+            if(
+                insideQuotes &&
+                line[i+1] === '"'
+            ){
+
+                current += '"';
+
+                i++;
+
+            }
+
+            else{
+
+                insideQuotes =
+                !insideQuotes;
+
+            }
+
+        }
+
+
+        else if(
+            char === "," &&
+            !insideQuotes
+        ){
+
+            result.push(
+                current.trim()
+            );
+
+            current = "";
+
+        }
+
+
+        else{
+
+            current += char;
+
+        }
+
+    }
+
+
+    result.push(
+        current.trim()
+    );
+
+
+    return result;
+
+}
+
+
+/* ==============================
+   NUMBER CLEANER
+============================== */
 
 function cleanNumber(value){
 
-const n=Number(
-String(value||"")
-.replace(/₹/g,"")
-.replace(/,/g,"")
-.trim()
-);
+    const number =
+    Number(
 
-return Number.isFinite(n)?n:NaN;
+        String(value || "")
 
-}
+        .replace(/₹/g,"")
 
+        .replace(/,/g,"")
 
-fetch("./Untitled%20spreadsheet%20-%20Sheet1.csv")
+        .trim()
 
-.then(response=>{
-
-if(!response.ok)
-throw new Error("CSV file could not be loaded.");
-
-return response.text();
-
-})
-
-.then(text=>{
-
-text=text.replace(/^\uFEFF/,"");
-
-const lines=text
-.trim()
-.split(/\r?\n/)
-.filter(line=>line.trim()!=="");
-
-if(lines.length<2)
-throw new Error("CSV has no data rows.");
-
-const headers=parseCSVLine(lines[0])
-.map(h=>h.replace(/^"|"$/g,"").trim());
-
-console.log("CSV headers:",headers);
+    );
 
 
-allData=lines.slice(1).map(line=>{
+    if(
+        Number.isFinite(number)
+    ){
 
-const v=parseCSVLine(line);
+        return number;
 
-return{
-
-Date:(v[0]||"").trim(),
-
-Tomato_Price:cleanNumber(v[1]),
-
-Onion_Price:cleanNumber(v[2]),
-
-Potato_Price:cleanNumber(v[3]),
-
-Cabbage_Price:cleanNumber(v[4]),
-
-Cauliflower_Price:cleanNumber(v[5]),
-
-Brinjal_Price:cleanNumber(v[6])
-
-};
-
-}).filter(row=>row.Date);
+    }
 
 
-console.log("Rows loaded:",allData.length);
-
-console.log("First row:",allData[0]);
-
-
-if(!allData.length)
-throw new Error("No valid rows found in CSV.");
-
-
-updateDashboard();
-
-createComparison();
-
-createTable();
-
-})
-
-.catch(error=>{
-
-console.error("CSV ERROR:",error);
-
-alert(
-"CSV load nahi ho rahi. GitHub mein index.html aur 'Untitled spreadsheet - Sheet1.csv' same folder mein hone chahiye."
-);
-
-});
-
-
-function setYear(year,button){
-
-currentYear=year;
-
-document
-.querySelectorAll(".year-btn")
-.forEach(btn=>btn.classList.remove("active"));
-
-button.classList.add("active");
-
-updateDashboard();
+    return NaN;
 
 }
 
+
+/* ==============================
+   FILTER DATA
+============================== */
 
 function getFilteredData(){
 
-if(currentYear==="all")
-return allData;
+    if(currentYear === "all"){
 
-return allData.filter(row=>
-row.Date.includes(currentYear)
-);
+        return allData;
+
+    }
+
+
+    return allData.filter(
+        row => {
+
+            return row.Date
+            .includes(currentYear);
+
+        }
+    );
 
 }
 
+
+/* ==============================
+   UPDATE DASHBOARD
+============================== */
 
 function updateDashboard(){
 
-if(allData.length===0)
-return;
+    if(allData.length === 0){
 
-const product=
-document.getElementById("productSelect").value;
+        return;
 
-const data=
-getFilteredData()
-.map(row=>row[product])
-.filter(value=>!isNaN(value));
+    }
 
 
-if(data.length===0)
-return;
+    const product =
+    document.getElementById(
+        "productSelect"
+    ).value;
 
 
-const average=
-data.reduce((a,b)=>a+b,0)/data.length;
+    const data =
+    getFilteredData();
 
 
-document.getElementById("average")
-.textContent="₹"+average.toFixed(2);
+    const values =
+    data
+
+    .map(
+        row =>
+        row[product]
+    )
+
+    .filter(
+        value =>
+        Number.isFinite(value)
+    );
 
 
-document.getElementById("minimum")
-.textContent=
-"₹"+Math.min(...data).toFixed(2);
+    if(values.length === 0){
+
+        document.getElementById(
+            "average"
+        ).textContent = "₹0";
 
 
-document.getElementById("maximum")
-.textContent=
-"₹"+Math.max(...data).toFixed(2);
+        document.getElementById(
+            "minimum"
+        ).textContent = "₹0";
 
 
-createChart(product);
+        document.getElementById(
+            "maximum"
+        ).textContent = "₹0";
+
+
+        return;
+
+    }
+
+
+    const total =
+    values.reduce(
+        (sum,value)=>
+        sum + value,
+        0
+    );
+
+
+    const average =
+    total / values.length;
+
+
+    const minimum =
+    Math.min(...values);
+
+
+    const maximum =
+    Math.max(...values);
+
+
+    document.getElementById(
+        "average"
+    ).textContent =
+    "₹" + average.toFixed(2);
+
+
+    document.getElementById(
+        "minimum"
+    ).textContent =
+    "₹" + minimum.toFixed(2);
+
+
+    document.getElementById(
+        "maximum"
+    ).textContent =
+    "₹" + maximum.toFixed(2);
+
+
+    createChart(product);
 
 }
 
+
+/* ==============================
+   CHART
+============================== */
 
 function createChart(product){
 
-const data=getFilteredData();
-
-const labels=data.map(row=>row.Date);
-
-const values=data.map(row=>row[product]);
-
-const productName=
-product.replace("_Price","");
+    const data =
+    getFilteredData();
 
 
-if(chart)
-chart.destroy();
+    const labels =
+    data.map(
+        row =>
+        row.Date
+    );
 
 
-const ctx=
-document.getElementById("priceChart")
-.getContext("2d");
+    const values =
+    data.map(
+        row =>
+        row[product]
+    );
 
 
-chart=new Chart(ctx,{
+    const productName =
+    product.replace(
+        "_Price",
+        ""
+    );
 
-type:"line",
 
-data:{
+    if(chart){
 
-labels:labels,
+        chart.destroy();
 
-datasets:[{
+    }
 
-label:
-productName+" Price (₹/kg)",
 
-data:values,
+    const canvas =
+    document.getElementById(
+        "priceChart"
+    );
 
-borderWidth:3,
 
-tension:.35,
+    const ctx =
+    canvas.getContext("2d");
 
-fill:true,
 
-pointRadius:3,
+    chart =
+    new Chart(
+        ctx,
+        {
 
-pointHoverRadius:7
+            type:"line",
 
-}]
+            data:{
 
-},
+                labels:labels,
 
-options:{
+                datasets:[{
 
-responsive:true,
+                    label:
+                    productName +
+                    " Price (₹/kg)",
 
-maintainAspectRatio:false,
+                    data:values,
 
-interaction:{
-mode:"index",
-intersect:false
-},
+                    borderWidth:3,
 
-plugins:{
+                    tension:0.35,
 
-legend:{
-labels:{
-color:"#c7d0ca"
+                    fill:true,
+
+                    pointRadius:3,
+
+                    pointHoverRadius:7
+
+                }]
+
+            },
+
+
+            options:{
+
+                responsive:true,
+
+                maintainAspectRatio:false,
+
+                interaction:{
+
+                    mode:"index",
+
+                    intersect:false
+
+                },
+
+
+                plugins:{
+
+                    legend:{
+
+                        labels:{
+
+                            color:"#d0d8d2"
+
+                        }
+
+                    }
+
+                },
+
+
+                scales:{
+
+                    x:{
+
+                        ticks:{
+
+                            color:"#89978f",
+
+                            maxTicksLimit:10
+
+                        },
+
+                        grid:{
+
+                            color:
+                            "rgba(255,255,255,.05)"
+
+                        }
+
+                    },
+
+
+                    y:{
+
+                        beginAtZero:false,
+
+                        ticks:{
+
+                            color:"#89978f",
+
+                            callback:
+                            function(value){
+
+                                return "₹" + value;
+
+                            }
+
+                        },
+
+                        grid:{
+
+                            color:
+                            "rgba(255,255,255,.06)"
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    );
+
 }
-}
 
-},
 
-scales:{
-
-x:{
-
-ticks:{
-color:"#8e9c94",
-maxRotation:45
-},
-
-grid:{
-color:"rgba(255,255,255,.05)"
-}
-
-},
-
-y:{
-
-beginAtZero:false,
-
-ticks:{
-
-color:"#8e9c94",
-
-callback:value=>"₹"+value
-
-},
-
-grid:{
-color:"rgba(255,255,255,.06)"
-}
-
-}
-
-}
-
-}
-
-});
-
-}
-
+/* ==============================
+   PRODUCT CHANGE
+============================== */
 
 document
-.getElementById("productSelect")
+.getElementById(
+    "productSelect"
+)
 .addEventListener(
-"change",
-updateDashboard
+    "change",
+    function(){
+
+        updateDashboard();
+
+    }
 );
 
 
-function createComparison(){
+/* ==============================
+   YEAR CHANGE
+============================== */
 
-const container=
-document.getElementById("comparison");
+function setYear(
+    year,
+    button
+){
 
-container.innerHTML="";
-
-
-const products=[
-
-["Tomato_Price","Tomato"],
-
-["Onion_Price","Onion"],
-
-["Potato_Price","Potato"],
-
-["Cabbage_Price","Cabbage"],
-
-["Cauliflower_Price","Cauliflower"],
-
-["Brinjal_Price","Brinjal"]
-
-];
+    currentYear =
+    year;
 
 
-products.forEach(product=>{
+    document
+    .querySelectorAll(
+        ".year-btn"
+    )
+    .forEach(
+        btn => {
 
-const values=
-allData
-.map(row=>row[product[0]])
-.filter(value=>!isNaN(value));
+            btn.classList.remove(
+                "active"
+            );
 
-
-const average=
-values.reduce((a,b)=>a+b,0)/values.length;
-
-
-const div=
-document.createElement("div");
-
-
-div.className="product-mini";
+        }
+    );
 
 
-div.innerHTML=`
-
-<strong>${product[1]}</strong>
-
-<span>₹${average.toFixed(2)}</span>
-
-`;
+    button.classList.add(
+        "active"
+    );
 
 
-container.appendChild(div);
-
-});
+    updateDashboard();
 
 }
 
+
+/* ==============================
+   COMPARISON
+============================== */
+
+function createComparison(){
+
+    const container =
+    document.getElementById(
+        "comparison"
+    );
+
+
+    container.innerHTML = "";
+
+
+    const products = [
+
+        ["Tomato_Price","Tomato"],
+
+        ["Onion_Price","Onion"],
+
+        ["Potato_Price","Potato"],
+
+        ["Cabbage_Price","Cabbage"],
+
+        ["Cauliflower_Price","Cauliflower"],
+
+        ["Brinjal_Price","Brinjal"]
+
+    ];
+
+
+    products.forEach(
+        product => {
+
+            const values =
+            allData
+
+            .map(
+                row =>
+                row[product[0]]
+            )
+
+            .filter(
+                value =>
+                Number.isFinite(value)
+            );
+
+
+            if(values.length === 0)
+                return;
+
+
+            const average =
+            values.reduce(
+                (a,b)=>
+                a+b,
+                0
+            )
+            /
+            values.length;
+
+
+            const card =
+            document.createElement(
+                "div"
+            );
+
+
+            card.className =
+            "product-mini";
+
+
+            card.innerHTML = `
+
+            <strong>
+            ${product[1]}
+            </strong>
+
+            <span>
+            ₹${average.toFixed(2)}
+            </span>
+
+            `;
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* ==============================
+   DAILY TABLE
+============================== */
 
 function createTable(){
 
-const tbody=
-document.getElementById("dataTable");
-
-tbody.innerHTML="";
-
-
-allData.forEach(row=>{
-
-const tr=
-document.createElement("tr");
+    const tbody =
+    document.getElementById(
+        "dataTable"
+    );
 
 
-tr.innerHTML=`
-
-<td>${row.Date}</td>
-
-<td>₹${row.Tomato_Price}</td>
-
-<td>₹${row.Onion_Price}</td>
-
-<td>₹${row.Potato_Price}</td>
-
-<td>₹${row.Cabbage_Price}</td>
-
-<td>₹${row.Cauliflower_Price}</td>
-
-<td>₹${row.Brinjal_Price}</td>
-
-`;
+    tbody.innerHTML = "";
 
 
-tbody.appendChild(tr);
+    allData.forEach(
+        row => {
 
-});
+            const tr =
+            document.createElement(
+                "tr"
+            );
+
+
+            tr.innerHTML = `
+
+            <td>
+            ${row.Date}
+            </td>
+
+            <td>
+            ₹${row.Tomato_Price}
+            </td>
+
+            <td>
+            ₹${row.Onion_Price}
+            </td>
+
+            <td>
+            ₹${row.Potato_Price}
+            </td>
+
+            <td>
+            ₹${row.Cabbage_Price}
+            </td>
+
+            <td>
+            ₹${row.Cauliflower_Price}
+            </td>
+
+            <td>
+            ₹${row.Brinjal_Price}
+            </td>
+
+            `;
+
+
+            tbody.appendChild(
+                tr
+            );
+
+        }
+    );
 
 }
 
-</script>
 
-</body>
-</html>
+/* ==============================
+   START
+============================== */
+
+loadCSV();
+
+</script>
+  
+ 
