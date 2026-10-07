@@ -1,329 +1,692 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Market Price Trend Analysis</title>
+<title>Market Price Trend Analysis</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f7f5;
-            color: #222;
-        }
+<style>
+*{
+    box-sizing:border-box;
+}
 
-        header {
-            background: #176b3a;
-            color: white;
-            text-align: center;
-            padding: 45px 20px;
-        }
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f7f5;
+    color:#222;
+}
 
-        header h1 {
-            margin: 0;
-            font-size: 36px;
-        }
+header{
+    background:linear-gradient(135deg,#0b6b3a,#159957);
+    color:white;
+    padding:45px 20px;
+    text-align:center;
+}
 
-        header p {
-            font-size: 18px;
-            margin-top: 10px;
-        }
+header h1{
+    margin:0;
+    font-size:38px;
+}
 
-        .container {
-            max-width: 1100px;
-            margin: 35px auto;
-            padding: 0 20px;
-        }
+header p{
+    font-size:18px;
+    margin-top:10px;
+}
 
-        .cards {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+.container{
+    max-width:1150px;
+    margin:30px auto;
+    padding:0 20px;
+}
 
-        .card {
-            background: white;
-            width: 30%;
-            min-width: 220px;
-            padding: 25px;
-            text-align: center;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-        }
+.notice{
+    background:#fff8df;
+    border-left:5px solid #e5a900;
+    padding:15px 18px;
+    border-radius:8px;
+    margin-bottom:25px;
+}
 
-        .card h2 {
-            margin-bottom: 10px;
-        }
+.cards{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
 
-        .price {
-            font-size: 30px;
-            font-weight: bold;
-            color: #176b3a;
-        }
+.card{
+    background:white;
+    padding:25px;
+    border-radius:16px;
+    text-align:center;
+    box-shadow:0 4px 15px rgba(0,0,0,.10);
+}
 
-        .section {
-            background: white;
-            margin-top: 30px;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.10);
-        }
+.card h2{
+    margin:5px 0 12px;
+}
 
-        .section h2 {
-            color: #176b3a;
-        }
+.price{
+    font-size:32px;
+    font-weight:bold;
+    color:#08783e;
+}
 
-        .section h3 {
-            color: #176b3a;
-            margin-top: 25px;
-        }
+.card p{
+    color:#666;
+}
 
-        .chart {
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            gap: 70px;
-            height: 300px;
-            padding-top: 30px;
-        }
+.controls{
+    background:white;
+    margin-top:25px;
+    padding:22px;
+    border-radius:16px;
+    box-shadow:0 4px 15px rgba(0,0,0,.10);
+}
 
-        .bar-container {
-            text-align: center;
-            width: 100px;
-        }
+.controls label{
+    font-weight:bold;
+}
 
-        .bar {
-            width: 80px;
-            margin: auto;
-            background: #3498db;
-            border-radius: 8px 8px 0 0;
-        }
+select{
+    padding:12px;
+    margin-top:8px;
+    width:100%;
+    max-width:350px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+}
 
-        .tomato {
-            height: 180px;
-        }
+.section{
+    background:white;
+    margin-top:25px;
+    padding:25px;
+    border-radius:16px;
+    box-shadow:0 4px 15px rgba(0,0,0,.10);
+}
 
-        .onion {
-            height: 205px;
-        }
+.section h2{
+    color:#08783e;
+    margin-top:0;
+}
 
-        .potato {
-            height: 140px;
-        }
+.chart-box{
+    position:relative;
+    height:380px;
+}
 
-        .bar-value {
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:20px;
+}
 
-        .bar-label {
-            margin-top: 10px;
-            font-weight: bold;
-        }
+.stat{
+    background:#f1f7f3;
+    padding:18px;
+    border-radius:10px;
+    text-align:center;
+}
 
-        footer {
-            text-align: center;
-            background: #176b3a;
-            color: white;
-            padding: 20px;
-            margin-top: 40px;
-        }
+.stat strong{
+    display:block;
+    font-size:24px;
+    color:#08783e;
+    margin-top:8px;
+}
 
-        @media (max-width: 700px) {
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
 
-            header h1 {
-                font-size: 27px;
-            }
+th,td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+    text-align:center;
+}
 
-            .card {
-                width: 100%;
-            }
+th{
+    background:#08783e;
+    color:white;
+}
 
-            .chart {
-                gap: 25px;
-            }
+tr:hover{
+    background:#f5f5f5;
+}
 
-            .bar {
-                width: 60px;
-            }
-        }
-    </style>
+.about{
+    line-height:1.7;
+}
+
+iframe{
+    width:100%;
+    height:1000px;
+    border:0;
+}
+
+footer{
+    margin-top:40px;
+    background:#07552f;
+    color:white;
+    text-align:center;
+    padding:25px;
+}
+
+@media(max-width:750px){
+
+    header h1{
+        font-size:28px;
+    }
+
+    .cards,
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .chart-box{
+        height:300px;
+    }
+
+    table{
+        font-size:13px;
+    }
+}
+</style>
 </head>
 
 <body>
 
 <header>
-
     <h1>🌾 Market Price Trend Analysis</h1>
-
-    <p>Agricultural Produce Price Analysis</p>
-
+    <p>Agricultural Produce Price Analysis Dashboard</p>
 </header>
-
 
 <div class="container">
 
+    <div class="notice">
+        <b>📌 Academic Dataset:</b>
+        This website uses a sample dataset created for academic/project analysis.
+        Prices are shown in ₹ per kg.
+    </div>
 
     <!-- PRICE CARDS -->
 
     <div class="cards">
 
         <div class="card">
-
             <h2>🍅 Tomato</h2>
-
-            <div class="price">₹34.00</div>
-
+            <div class="price" id="tomatoAvg">Loading...</div>
             <p>Average Price / kg</p>
-
         </div>
 
-
         <div class="card">
-
             <h2>🧅 Onion</h2>
-
-            <div class="price">₹38.67</div>
-
+            <div class="price" id="onionAvg">Loading...</div>
             <p>Average Price / kg</p>
-
         </div>
-
 
         <div class="card">
-
             <h2>🥔 Potato</h2>
-
-            <div class="price">₹26.25</div>
-
+            <div class="price" id="potatoAvg">Loading...</div>
             <p>Average Price / kg</p>
+        </div>
+
+    </div>
+
+
+    <!-- PRODUCT SELECTOR -->
+
+    <div class="controls">
+
+        <label for="productSelect">
+            📊 Select Agricultural Product
+        </label>
+
+        <br>
+
+        <select id="productSelect">
+            <option value="Tomato_Price">🍅 Tomato</option>
+            <option value="Onion_Price">🧅 Onion</option>
+            <option value="Potato_Price">🥔 Potato</option>
+        </select>
+
+    </div>
+
+
+    <!-- TREND CHART -->
+
+    <div class="section">
+
+        <h2>📈 Price Trend Analysis</h2>
+
+        <p>
+            The graph shows how the selected agricultural product's
+            price changes over the 30-day period.
+        </p>
+
+        <div class="chart-box">
+            <canvas id="priceChart"></canvas>
+        </div>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="section">
+
+        <h2>📊 Price Statistics</h2>
+
+        <div class="stats">
+
+            <div class="stat">
+                Minimum Price
+                <strong id="minPrice">-</strong>
+            </div>
+
+            <div class="stat">
+                Maximum Price
+                <strong id="maxPrice">-</strong>
+            </div>
+
+            <div class="stat">
+                Average Price
+                <strong id="selectedAvg">-</strong>
+            </div>
 
         </div>
 
     </div>
 
 
-
-    <!-- CHART -->
+    <!-- COMPARISON -->
 
     <div class="section">
 
-        <h2>📊 Average Price Comparison</h2>
+        <h2>⚖️ Agricultural Produce Comparison</h2>
 
-        <div class="chart">
+        <table>
 
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Average Price</th>
+                    <th>Minimum Price</th>
+                    <th>Maximum Price</th>
+                </tr>
+            </thead>
 
-            <div class="bar-container">
+            <tbody id="comparisonTable">
+            </tbody>
 
-                <div class="bar-value">₹34.00</div>
+        </table>
 
-                <div class="bar tomato"></div>
-
-                <div class="bar-label">Tomato</div>
-
-            </div>
-
-
-            <div class="bar-container">
-
-                <div class="bar-value">₹38.67</div>
-
-                <div class="bar onion"></div>
-
-                <div class="bar-label">Onion</div>
-
-            </div>
+    </div>
 
 
-            <div class="bar-container">
+    <!-- DATA TABLE -->
 
-                <div class="bar-value">₹26.25</div>
+    <div class="section">
 
-                <div class="bar potato"></div>
+        <h2>📅 Daily Price Data</h2>
 
-                <div class="bar-label">Potato</div>
+        <div style="overflow-x:auto;">
 
-            </div>
+            <table>
 
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Tomato (₹/kg)</th>
+                        <th>Onion (₹/kg)</th>
+                        <th>Potato (₹/kg)</th>
+                    </tr>
+                </thead>
+
+                <tbody id="dataTable">
+                </tbody>
+
+            </table>
 
         </div>
 
     </div>
 
 
+    <!-- ABOUT -->
 
-    <!-- ABOUT PROJECT -->
-
-    <div class="section">
+    <div class="section about">
 
         <h2>📋 About the Project</h2>
 
         <p>
-            This project analyzes the market prices of agricultural
-            products such as tomato, onion and potato.
+            This project analyzes and compares the prices of three
+            agricultural products: tomato, onion and potato.
         </p>
 
         <p>
-            The project compares average prices and uses data
-            visualization to understand agricultural price patterns.
+            The website uses data analysis and visualization to identify
+            price patterns, compare average prices and understand
+            minimum and maximum price variations.
+        </p>
+
+        <h3>💻 Technologies Used</h3>
+
+        <p>
+            Python | Pandas | Matplotlib | Google Colab |
+            HTML | CSS | JavaScript | Chart.js
+        </p>
+
+        <h3>🎯 Project Objective</h3>
+
+        <p>
+            The objective is to present agricultural price information
+            in a simple and interactive form so that users can easily
+            compare different agricultural products.
         </p>
 
     </div>
 
 
-
-    <!-- TECHNOLOGIES -->
+    <!-- FEEDBACK FORM -->
 
     <div class="section">
 
-        <h2>💻 Technologies Used</h2>
+        <h2>📝 Project Feedback</h2>
 
         <p>
-            Python &nbsp; | &nbsp;
-            Pandas &nbsp; | &nbsp;
-            Matplotlib &nbsp; | &nbsp;
-            Google Colab
+            Please fill out the feedback form and provide your valuable response.
         </p>
 
+        <iframe
+        src="https://docs.google.com/forms/d/e/1FAIpQLScHsVqoXMzcCQstrwj6njCDQM8DZgHFcpQM2AuLRQx1YK3-TA/viewform?embedded=true">
+        </iframe>
+
     </div>
-
-<!-- PROJECT SURVEY -->
-
-<div class="section">
-
-    <h2>📝 Project Survey</h2>
-
-    <p>Please fill out the survey and provide your valuable response.</p>
-    <iframe
-        src="https://docs.google.com/forms/d/e/1FAIpQLScHsVqoXMzcCQstrwj6njCDQM8DZgHFcpQM2AuLRQx1YK3-TA/viewform?embedded=true"
-        width="100%"
-        height="1200"
-        frameborder="0"
-        marginheight="0"
-        marginwidth="0">
-        Loading…
-    </iframe>
 
 </div>
 
 
-<!-- FOOTER -->
-
 <footer>
 
     <p>Market Price Trend Analysis © 2026</p>
-
-    <p>CEP Project</p>
+    <p>CEP Project | Zahid Ansari | Roll No. 03</p>
 
 </footer>
 
+
+<script>
+
+let priceData = [];
+let chart;
+
+
+/* LOAD CSV */
+
+fetch("Untitled spreadsheet - Sheet1.csv")
+.then(response => {
+
+    if(!response.ok){
+        throw new Error("CSV file could not be loaded");
+    }
+
+    return response.text();
+
+})
+.then(csv => {
+
+    const rows = csv.trim().split("\n");
+
+    const headers = rows[0].split(",");
+
+    priceData = rows.slice(1).map(row => {
+
+        const values = row.split(",");
+
+        return {
+            Date: values[0].trim(),
+            Tomato_Price: Number(values[1]),
+            Onion_Price: Number(values[2]),
+            Potato_Price: Number(values[3])
+        };
+
+    });
+
+    showAverages();
+    showComparison();
+    showTable();
+    updateChart();
+
+})
+.catch(error => {
+
+    console.error(error);
+
+    document.getElementById("tomatoAvg").innerText = "Error";
+    document.getElementById("onionAvg").innerText = "Error";
+    document.getElementById("potatoAvg").innerText = "Error";
+
+});
+
+
+/* AVERAGE FUNCTION */
+
+function average(product){
+
+    const values = priceData.map(item => item[product]);
+
+    return values.reduce((a,b) => a+b,0) / values.length;
+
+}
+
+
+/* MINIMUM */
+
+function minimum(product){
+
+    return Math.min(
+        ...priceData.map(item => item[product])
+    );
+
+}
+
+
+/* MAXIMUM */
+
+function maximum(product){
+
+    return Math.max(
+        ...priceData.map(item => item[product])
+    );
+
+}
+
+
+/* SHOW AVERAGES */
+
+function showAverages(){
+
+    document.getElementById("tomatoAvg").innerText =
+        "₹" + average("Tomato_Price").toFixed(2);
+
+    document.getElementById("onionAvg").innerText =
+        "₹" + average("Onion_Price").toFixed(2);
+
+    document.getElementById("potatoAvg").innerText =
+        "₹" + average("Potato_Price").toFixed(2);
+
+}
+
+
+/* COMPARISON TABLE */
+
+function showComparison(){
+
+    const products = [
+        ["🍅 Tomato","Tomato_Price"],
+        ["🧅 Onion","Onion_Price"],
+        ["🥔 Potato","Potato_Price"]
+    ];
+
+    let html = "";
+
+    products.forEach(product => {
+
+        html += `
+        <tr>
+            <td>${product[0]}</td>
+            <td>₹${average(product[1]).toFixed(2)}</td>
+            <td>₹${minimum(product[1]).toFixed(2)}</td>
+            <td>₹${maximum(product[1]).toFixed(2)}</td>
+        </tr>
+        `;
+
+    });
+
+    document.getElementById("comparisonTable").innerHTML = html;
+
+}
+
+
+/* DAILY DATA TABLE */
+
+function showTable(){
+
+    let html = "";
+
+    priceData.forEach(item => {
+
+        html += `
+        <tr>
+            <td>${item.Date}</td>
+            <td>₹${item.Tomato_Price.toFixed(2)}</td>
+            <td>₹${item.Onion_Price.toFixed(2)}</td>
+            <td>₹${item.Potato_Price.toFixed(2)}</td>
+        </tr>
+        `;
+
+    });
+
+    document.getElementById("dataTable").innerHTML = html;
+
+}
+
+
+/* CHART */
+
+function updateChart(){
+
+    const product =
+        document.getElementById("productSelect").value;
+
+    const labels =
+        priceData.map(item => item.Date);
+
+    const values =
+        priceData.map(item => item[product]);
+
+    const productName =
+        product.replace("_Price","");
+
+    const ctx =
+        document.getElementById("priceChart").getContext("2d");
+
+
+    if(chart){
+        chart.destroy();
+    }
+
+
+    chart = new Chart(ctx, {
+
+        type:"line",
+
+        data:{
+
+            labels:labels,
+
+            datasets:[{
+
+                label:productName + " Price (₹/kg)",
+
+                data:values,
+
+                borderWidth:3,
+
+                tension:0.3,
+
+                fill:false
+
+            }]
+
+        },
+
+        options:{
+
+            responsive:true,
+
+            maintainAspectRatio:false,
+
+            plugins:{
+
+                legend:{
+                    display:true
+                }
+
+            },
+
+            scales:{
+
+                y:{
+                    beginAtZero:false,
+
+                    title:{
+                        display:true,
+                        text:"Price (₹ per kg)"
+                    }
+
+                },
+
+                x:{
+                    title:{
+                        display:true,
+                        text:"Date"
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+
+    document.getElementById("minPrice").innerText =
+        "₹" + minimum(product).toFixed(2);
+
+    document.getElementById("maxPrice").innerText =
+        "₹" + maximum(product).toFixed(2);
+
+    document.getElementById("selectedAvg").innerText =
+        "₹" + average(product).toFixed(2);
+
+}
+
+
+/* PRODUCT CHANGE */
+
+document.getElementById("productSelect")
+.addEventListener("change", updateChart);
+
+</script>
 
 </body>
 </html>
